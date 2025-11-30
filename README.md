@@ -6,7 +6,7 @@
 
 教学资料使用 [Typst](https://typst.app/) 编写，模板使用 [梦源宋体](https://github.com/Pal3love/dream-han-cjk) 作为主要字体。
 
-各幻灯片源文件名均以 `.typ` 结尾，构建时确保已安装梦源宋体：
+各幻灯片源文件名均以 `.typ` 结尾（`template.typ` 为模板文件），构建时确保已安装梦源宋体：
 
 ```shell
 typst compile preview.typ output.pdf
