@@ -1,6 +1,7 @@
 # Build configuration for Typst project
 rule typst_compile
-  command = typst compile $in
+  depfile = $in.d
+  command = typst compile --deps $in.d --deps-format make $in
   description = Compile Typst document $in
 
 rule typst_watch
