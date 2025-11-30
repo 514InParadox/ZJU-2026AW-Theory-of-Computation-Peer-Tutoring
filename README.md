@@ -14,6 +14,8 @@ typst compile preview.typ output.pdf
 
 以上命令从 `preview.typ` 构建 PDF 文件输出并写入至 `output.pdf`。
 
+如果你安装了 [Ninja](https://ninja-build.org/)，可以使用 `ninja` 命令自动构建全部幻灯片。
+
 ## 许可证
 
 本文档仓库，除非另有说明，均采用 [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) 许可。
