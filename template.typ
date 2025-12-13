@@ -10,6 +10,8 @@
 #import "@preview/finite:0.5.0": automaton, layout
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
 
+#import "@preview/lovelace:0.3.0": *
+
 #let aligned-terms(it) = {
   show terms: it => grid(
     columns: 2, row-gutter: .8em, column-gutter: .6em, align: (left, left),
@@ -79,3 +81,5 @@
   blank: "\u{2294}",
   yield: $tack.r_M$,
 )
+
+#let encoding(object) = $\" object \"$

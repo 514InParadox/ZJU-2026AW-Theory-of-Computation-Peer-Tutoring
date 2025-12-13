@@ -12,8 +12,8 @@ rule typst_watch
 build ch1-language-fa-regex.pdf: typst_compile ch1-language-fa-regex.typ
 build ch2-cfl.pdf: typst_compile ch2-cfl.typ
 build ch3-turing-machine.pdf: typst_compile ch3-turing-machine.typ
+build ch4-decidability.pdf: typst_compile ch4-decidability.typ
 build supplementary-exercises.pdf: typst_compile supplementary-exercises.typ
 build preview.pdf: typst_compile preview.typ
 
-# Watch targets
-default ch1-language-fa-regex.pdf ch2-cfl.pdf ch3-turing-machine.pdf supplementary-exercises.pdf preview.pdf
+default ch1-language-fa-regex.pdf ch2-cfl.pdf ch3-turing-machine.pdf ch4-decidability.pdf supplementary-exercises.pdf preview.pdf
