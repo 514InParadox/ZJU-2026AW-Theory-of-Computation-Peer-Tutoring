@@ -17,13 +17,17 @@
 
 == 编码与可判定问题
 
-/ 编码: 用某一语言中的字符串来表示某一集合中的元素，可以通过字符串还原出原元素， $O$ 的编码用 $encoding(O)$ 表示
-- 有限集合可编码
-- 有限个有限集合组成的整体可编码，FA、正则表达式、CFG、PDA、TM 都可编码
-/ 可判定问题: 被编码得到的语言可判定的问题
-/ 规约 $A <= B$: $A, B$ 为 $Sigma$ 上的语言，存在可计算函数 $f: Sigma^* -> Sigma^*$ 使 $forall w in Sigma^*, w in A <-> f(w) in B$
-- $"recursive"(B) and (A <= B) -> "recursive"(A)$
-- $"RE"(B) and (A <= B) -> "RE"(A)$
+#[
+  #set text(size: 23pt)
+  / 编码: 用某一语言中的字符串来表示某一集合中的元素，可以通过字符串还原出原元素， $O$ 的编码用 $encoding(O)$ 表示
+  - 有限集合可编码
+  - 有限个有限集合组成的整体可编码，FA、正则表达式、CFG、PDA、TM 都可编码
+  / 可判定问题: 被编码得到的语言可判定（递归）的问题
+  / 可半判定问题: 被编码得到的语言可半判定（递归可数）的问题
+  / 规约 $A <= B$: $A, B$ 为 $Sigma$ 上的语言，存在可计算函数 $f: Sigma^* -> Sigma^*$ 使 $forall w in Sigma^*, w in A <-> f(w) in B$
+  - $"recursive"(B) and (A <= B) -> "recursive"(A)$
+  - $"RE"(B) and (A <= B) -> "RE"(A)$
+]
 
 == 通用图灵机（UTM）
 
@@ -194,8 +198,8 @@ $H_d <= overline(H) => not "RE"(overline(H))$
 - $E_"DFA" = {encoding(D) : D "is a DFA", L(D) = emptyset}$
   - 搜索是否有可达的接受状态
 - $"EQ"_"DFA" = {encoding(D_1) encoding(D_2) : D_1, D_2 "are DFAs", L(D_1) = L(D_2)}$
-  - 构造 $D_1 plus.o D_2 = A union B - A inter B$
-  - $L(D_1) = L(D_2) <-> D_1 plus.o D_2$
+  - 构造 $D_1 plus.o D_2 = L(D_1) union L(D_2) - L(D_1) inter L(D_2)$
+  - $L(D_1) = L(D_2) <-> D_1 plus.o D_2 = emptyset$
 - $"ALL"_"DFA" = {encoding(D) : D "is a DFA that accepts all inputs"}$
   - 构造 $overline(D)$
 
@@ -251,7 +255,7 @@ $H_d <= overline(H) => not "RE"(overline(H))$
   - $H_e = {encoding(M) : M "is a TM that halts on" e}$ 不可判定但可半判定
   - $"SOME"_"TM" = {encoding(M) : M "is a TM that halts on some input"}$ 不可判定但可半判定
   - $"ALL"_"TM" = {encoding(M) : M "is a TM that halts on all inputs"} >= overline(H)$ 不可半判定
-    - 对 $overline(H)$ 的输入 $encoding(M) encoding(w)$ 构造 $M'(encoding(n))$：如果 $M(w)$ 在 $n$ 步内终止则无限循环，否则终止）
+    - 对 $overline(H)$ 的输入 $encoding(M) encoding(w)$ 构造 $M'(encoding(n))$：如果 $M(w)$ 在 $n$ 步内终止则无限循环，否则终止
   - $overline("ALL"_"TM") >= overline(H)$ 不可半判定
   - $"EQ"_"TM" = {encoding(M_1) encoding(M_2) : M_1, M_2 "are TMs that halts on same inputs"} >= "ALL"_"TM"$ 不可半判定（构造 $M_2$ 为无视输入立刻停机的 TM）
   - $overline("EQ"_"TM") >= overline(H)$ 不可半判定（同上）
