@@ -39,13 +39,10 @@ RE 语言对并、连接、星号、交运算封闭，对补不封闭
 
 Let $L_1$ be a regular language, $L_3$ be a context-free language.
 For any language $L_2 subset.eq L_3 - L_1$,
-although $L_2$ may not be regular, it must be context-free. #pause #correct
+although $L_2$ may not be regular, it must be context-free. #pause #wrong
 
-$L_3 - L_1 = L_3 inter overline(L_1)$
+取 $L_1 = emptyset, L_3 = Sigma^*$，显然存在 $L_2 subset.eq L_3 - L_1 = Sigma^*$ 不是 CFL
 
-$"context-free"(L_3) and "regular"(overline(L_1)) -> "context-free"(L_3 inter overline(L_1))$
-
-"may not be regular": $L_1 = emptyset and not "regular"(L_3) -> not "regular"(L_2)$
 
 ==
 
@@ -102,9 +99,17 @@ $mu$-recursive functions #sym.arrow.double 图灵机，可数
 
 Let $A$ be some language. Suppose that $A <= overline(A)$, it is impossible that $A$ is not recursive but recursively enumerable. #pause #correct
 
-$"RE"(A) and (A <= overline(A)) -> "RE"(overline(A))$
+$A <= B$ 时，令归约函数为 $f$，则 $forall w in Sigma^*, w in A <-> f(w) in B$
 
-$"RE"(A) and "RE"(overline(A)) -> "recursive"(A)$
+等价于 $forall w in Sigma^*, w in.not A <-> f(w) in.not B$
+
+即 $forall w in Sigma^*, w in overline(A) <-> f(w) in overline(B)$ 即 $overline(A) <= overline(B)$ #pause
+
+$A <= overline(A) => overline(A) <= overline(overline(A)) => overline(A) <= A$
+
+$"RE"(A) and overline(A) <= A => "RE"(overline(A))$
+
+$"RE"(A) and "RE"(overline(A)) => "recursive"(A)$
 
 = 不定项选择题
 
