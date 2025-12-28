@@ -266,7 +266,7 @@
 
 = 正则表达式和正则语言
 
-== 正则表达式（Regular Expression）
+== 正则表达式
 
 - $Sigma union {(,),union,*,emptyset}$ 上的字符串
   - $emptyset$ 是正则表达式，对应语言 $L(emptyset) = emptyset$
