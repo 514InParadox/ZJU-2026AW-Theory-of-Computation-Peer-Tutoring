@@ -8,12 +8,19 @@ rule typst_watch
   command = typst watch $in
   description = Watch and auto-compile $in
 
+rule pack_7z
+  command = 7z a -t7z -m0=lzma2 -mx=9 $out $in
+  description = Pack all PDF files into $out
+
 # Build targets
 build ch1-language-fa-regex.pdf: typst_compile ch1-language-fa-regex.typ
 build ch2-cfl.pdf: typst_compile ch2-cfl.typ
 build ch3-turing-machine.pdf: typst_compile ch3-turing-machine.typ
 build ch4-decidability.pdf: typst_compile ch4-decidability.typ
 build supplementary-exercises.pdf: typst_compile supplementary-exercises.typ
+build exam-2023-2024.pdf: typst_compile exam-2023-2024.typ
 build preview.pdf: typst_compile preview.typ
 
-default ch1-language-fa-regex.pdf ch2-cfl.pdf ch3-turing-machine.pdf ch4-decidability.pdf supplementary-exercises.pdf preview.pdf
+build all.7z: pack_7z ch1-language-fa-regex.pdf ch2-cfl.pdf ch3-turing-machine.pdf ch4-decidability.pdf supplementary-exercises.pdf exam-2023-2024.pdf preview.pdf
+
+default all.7z
