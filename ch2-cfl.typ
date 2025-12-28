@@ -224,7 +224,7 @@ $L = L' inter overline(R)$
               & ((s', a, a), (s', a a)), ((s', a, b), (s', epsilon)), \
               & ((s', b, a), (s', epsilon)), ((s', b, b), (s', b b)), \
               & ((s', epsilon, a), (f, epsilon)), ((s', epsilon, b), (f, epsilon)), \
-              & ((f, a, a), (f, epsilon)), ((f, b, b), (f, epsilon)), \
+              & ((f, epsilon, a), (f, epsilon)), ((f, epsilon, b), (f, epsilon)), \
               & ((f, epsilon, Z), (f, epsilon)) }
   $
 ]
