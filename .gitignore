@@ -3,5 +3,6 @@
 .ninja_log
 AGENTS.md
 CLAUDE.md
+.claude
 *.d
 *.7z
