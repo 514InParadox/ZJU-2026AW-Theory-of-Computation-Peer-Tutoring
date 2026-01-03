@@ -21,3 +21,8 @@ typst compile preview.typ output.pdf
 本文档仓库，除非另有说明，均采用 [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) 许可。
 
 本项目包含的第三方素材位于 `images/` 目录下，其许可证状态各不相同。请参阅 [`images/README.md`](images/README.md) 了解详细使用条款与归属要求。
+
+## 相关资料
+
+- [计算理论 - 鹤翔万里的笔记本](https://note.tonycrane.cc/cs/tcs/toc/)
+- [memset0 整理复习资料](https://alidocs.dingtalk.com/i/nodes/Gl6Pm2Db8D3mKkP4tqRYrzMmJxLq0Ee4?utm_scene=team_space) （需浙江大学钉钉权限）
