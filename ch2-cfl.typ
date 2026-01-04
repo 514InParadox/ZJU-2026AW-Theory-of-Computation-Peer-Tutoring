@@ -248,7 +248,7 @@ $L = L' inter overline(R)$
 
 构造 $a$ 比 $b$ 多的串：$G -> E A E | G G, A -> a A | a$
 
-$L -> E B E | G G, B -> b B | b$
+$L -> E B E | L L, B -> b B | b$
 
 $S -> L | G$
 
