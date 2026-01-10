@@ -187,7 +187,7 @@ $H_d <= overline(H) => not "RE"(overline(H))$
 - $exists B, not "RE"(B) and (B <= A)$
 - $
     ("RE"(A) and "RE"(overline(A)) -> "recursive"(A)) \
-    <-> (not "recursive"(A) and not "RE"(overline(A)) -> not "RE"(A))
+    <-> (not "recursive"(A) and "RE"(overline(A)) -> not "RE"(A))
   $
 
 == 正则语言的常见问题
