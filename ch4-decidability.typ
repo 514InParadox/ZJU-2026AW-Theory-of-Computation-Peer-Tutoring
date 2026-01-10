@@ -100,7 +100,7 @@ $A_1 = {encoding(M) : M "is a TM that halts on" e}$，显然 RE
 
 #pause
 
-对 $H$，输入 $encoding(M) encoding(w)$ 时动态构造 $encoding(M')$：
+对 $H$，构造 $f(encoding(M) encoding(w)) = encoding(M')$，其中：
 
 #[
   #set text(size: 20pt)
@@ -109,7 +109,12 @@ $A_1 = {encoding(M) : M "is a TM that halts on" e}$，显然 RE
   ]
 ]
 
-则有 $H <= A_1$，$A_1$ 非递归
+图灵机编码可计算 #sym.arrow.double $f$ 可计算（$f$ 代表构造 $encoding(M')$ 的过程），且有
+$
+  encoding(M) encoding(w) in H -> f(encoding(M) encoding(w)) in A_1, encoding(M) encoding(w) in.not H -> f(encoding(M) encoding(w)) in.not A_1
+$
+
+因此 $H <= A_1$，$A_1$ 非递归
 
 ---
 
@@ -149,7 +154,7 @@ $A_3 = {encoding(M) : M "is a TM that halts on every input"}$ 非递归，RE？
 
 $H_d <= overline(H) => not "RE"(overline(H))$
 
-对 $overline(H)$，输入 $encoding(M) encoding(w)$，动态构造自然数集上的 $M'$：
+对 $overline(H)$，构造 $f(encoding(M) encoding(w)) = encoding(M')$，其中：
 
 #[
   #set text(size: 20pt)
@@ -161,7 +166,7 @@ $H_d <= overline(H) => not "RE"(overline(H))$
   ]
 ]
 
-则 $overline(H) <= A_3$，$A_3$ 非 RE
+则有 $encoding(M) encoding(w) in overline(H) <-> f(encoding(M) encoding(w)) in A_3$，$overline(H) <= A_3$，$A_3$ 非 RE
 
 = 判定问题
 
