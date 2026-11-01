@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="130" viewBox="-.5 -.25 75 19.5">
+<path fill="#FF0" d="m0,11h8v8H0m11-8v8h8V11m3,0v8h8m3-8v8h8m3-8h8v8m14-8h8v8"/>
+<path fill="#0F0" d="m5.5,0h8v8m3,0 8-8h-8l8,8m3,0V0h8m3,0v8h8m14,0h8V0M11,19l4-4 4,4m3-8h8v8m3-8 4,4 4-4m14,0v8h8m3,0 8-8h-8l8,8"/>
+<path fill="#F00" d="m5.5,0v8h8m3-8 4,4-4,4m22-8h8v8m3-8h8v8m3,0V0h8M0,19l4-4 4,4m14,0 h8v-8m14,0v8h8"/>
+<path fill="#00F" d="m5.5,8 4-4 4,4m7-4 4-4v8m3,0h8V0m14,0v8h8m3-8v8l4-4M11,11l4,4 4-4m36,0 4,4 4-4"/>
+<path fill="#888" d="m26,15 4,4V11m7,4 4,4V11m3,0v8l8-8v8m3-8v8l8-8v8m3-8v8l4-4"/>
+<path fill="none" stroke="#000" stroke-width=".3" d="
+M5.5,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8z
+M5.5,0l8,8m3,0 8-8m3,0 8,8m3,0 8-8m3,0 8,8m3,0 8-8
+M5.5,8l8-8m3,0 8,8m3,0 8-8m3,0 8,8m3,0 8-8m3,0 8,8
+M0,11h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8zm11,0h8v8h-8z
+M0,11l8,8m3,0 8-8m3,0 8,8m3,0 8-8m3,0 8,8m3,0 8-8m3,0 8,8
+M0,19l8,-8m3,0 8,8m3,0 8-8m3,0 8,8m3,0 8-8m3,0 8,8m3,0 8-8"/>
+</svg>

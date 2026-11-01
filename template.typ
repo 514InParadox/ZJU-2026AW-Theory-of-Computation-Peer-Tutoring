@@ -25,14 +25,14 @@
   show sym.arrow.double: math.scripts
   show sym.tack.r: math.scripts
 
-  set text(font: "Dream Han Serif")
+  set text(font: "Dream Han Serif SC")
 
   show: university-theme.with(
     aspect-ratio: "16-9",
     config-info(
       title: title,
-      subtitle: [2025 年秋冬学期计算机学院朋辈辅学计算理论],
-      author: [Loct Strider],
+      subtitle: [2026 年秋冬学期计算机学院朋辈辅学计算理论],
+      author: [514I & memset0],
       date: date,
       institution: [浙江大学],
       logo: [],

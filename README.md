@@ -1,6 +1,8 @@
-# 浙江大学 2025 年秋冬计算理论朋辈辅学资料
+# 浙江大学 2026 年秋冬计算理论朋辈辅学资料
 
-本 repo 包含浙江大学 2025 年秋冬计算理论朋辈辅学的教学资料。
+本 repo 包含浙江大学 2026 年秋冬计算理论朋辈辅学的教学资料；
+
+基于学长 LoctStrider 公开的 [2025 年辅学资料](https://codeberg.org/LoctStrider/ZJU-2025AW-Theory-of-Computation-Peer-Tutoring) 进行修改。
 
 ## 构建
 
@@ -26,3 +28,4 @@ typst compile preview.typ output.pdf
 
 - [计算理论 - 鹤翔万里的笔记本](https://note.tonycrane.cc/cs/tcs/toc/)
 - [memset0 整理复习资料](https://alidocs.dingtalk.com/i/nodes/Gl6Pm2Db8D3mKkP4tqRYrzMmJxLq0Ee4?utm_scene=team_space) （需浙江大学钉钉权限）
+- [2025 年辅学课件](https://codeberg.org/LoctStrider/ZJU-2025AW-Theory-of-Computation-Peer-Tutoring)

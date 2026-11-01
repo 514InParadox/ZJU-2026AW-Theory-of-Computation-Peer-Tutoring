@@ -2,7 +2,7 @@
 
 #show: toc-template.with(
   title: [计算理论课程前瞻],
-  date: datetime(year: 2025, month: 10, day: 22),
+  date: datetime(year: 2026, month: 10, day: 24),
 )
 
 = 课程介绍
@@ -16,18 +16,54 @@
 - 可计算性理论
 - 计算复杂性理论
 
+// Public-domain originals; labels are typeset independently.
+#let branch-image(body, caption) = align(center, stack(
+  dir: ttb,
+  spacing: 5mm,
+  box(width: 58mm, height: 30mm, align(center + horizon, body)),
+  text(size: 14pt, caption),
+))
+
+#align(center, grid(
+  columns: (58mm, 58mm, 58mm),
+  column-gutter: 6mm,
+  align: center,
+  branch-image(image("images/preview/dfa.svg", width: 25mm), [Automata\ theory]),
+  branch-image(image("images/preview/wang-tiles.svg", width: 25mm), [Computability\ theory]),
+  branch-image(text(size: 18pt)[$P = N P$ ?], [Computational\ complexity theory]),
+))
+
+== 教学安排
+
+- 课程
+  - 周六 13:30-15:00，两周一次，共四次
+  - 线下授课，钉群同步直播
+  - 以知识点总结和习题讲解为主
+
+- 答疑
+  - 期末周复习时全天线下辅导
+  - 听课 < 线上讨论 < 线下讨论；询问 AI
+
+#context {
+  set text(size: 12pt)
+  set block(above: 10pt, below: 0pt)
+  figure(
+    image("images/preview/learn-math.png", width: 88%),
+    caption: link("https://www.bilibili.com/video/BV1HBnH6JEAZ")[3Blue1Brown],
+    supplement: none,
+    numbering: none,
+    gap: 1mm,
+  )
+}
+
 == 相关资料
 
-- 讲义：制作中
+- 课件
+  - https://codeberg.org/LoctStrider/ZJU-2025AW-Theory-of-Computation-Peer-Tutoring
 - 学长笔记
   - https://note.tonycrane.cc/cs/tcs/toc/
   - https://xuan-insr.github.io/other_courses/theory_of_computation/
-
-== 课程安排
-
-- 周日 19:00-20:30，两周一次
-- 线下授课，钉群同步直播
-- 同步教学进度，以知识点总结和习题讲解为主
+- 25 年聚众复习整理的资料 & 笔记
 
 = 内容概览
 
@@ -55,6 +91,9 @@
     - 连接：$L_1 L_2 = {w_1 w_2 | w_1 in L_1, w_2 in L_2}$
     - $L^* = L^0 union L^1 union L^2 union ...$
     - $L^+ = L L^*$
+
+- 字符集上的语言大小可数
+- 字符集上的语言数量不可数
 
 ---
 
@@ -114,7 +153,17 @@
   - $cal(L)(alpha beta) = cal(L)(alpha)cal(L)(beta)$
   - $cal(L)(alpha union beta) = cal(L)(alpha) union cal(L)(beta)$
   - $cal(L)(alpha^*) = cal(L)(alpha)^*$
-- $L$ 是正则语言 $arrow.l.r$ $L$ 可由某个 FA 接受
+
+---
+
+- *闭包性质*：设 $L_1, L_2 subset.eq Sigma^*$ 均为正则语言，则
+  - 并集：$L_1 union L_2 = {w: w in L_1 "or" w in L_2}$ 是正则语言
+  - 交集：$L_1 inter L_2 = {w: w in L_1 "and" w in L_2}$ 是正则语言
+  - 补集：$overline(L_1) = Sigma^* - L_1$ 是正则语言
+- *等价性*：$L$ 是正则语言 $arrow.l.r$ $L$ 可由某个 FA 接受
+  - NFA $arrow$ DFA：子集构造法，Exponential
+  - 正则语言 $arrow$ NFA：Thompson 构造，Polynomial
+  - DFA $arrow$ 正则语言：状态消除法
 
 ---
 
@@ -124,6 +173,8 @@
   - $|y| >= 1$
   - $forall i >= 0$，都有 $x y^i z in L$
 - 一般用来证明某语言不是正则语言
+- 不存在一般方法证明语言是 / 不是正则的
+- 几何直观：FA 上成环 $arrow$ 环可任意多次复制
 
 == 上下文无关文法与下推自动机
 
@@ -178,7 +229,19 @@
   - $Gamma$：栈符号集
   - $Delta$：状态转移集合，$Delta: (K times (Sigma union {epsilon}) times Gamma^*) times (K times Gamma^*)$
   - NFA + 栈
-- 语言 $L$ 是上下文无关语言 $arrow.l.r$ $L$ 可由某个 PDA 接受
+
+---
+
+- *闭包性质*：设 $L_1, L_2 subset.eq Sigma^*$ 均为上下文无关语言，则
+  - $L_1 union L_2$、$L_1 L_2$、$L_1^*$ 均为上下文无关语言
+  - $L_1 inter L_2$、$overline(L_1) = Sigma^* - L_1$ 不一定是上下文无关语言
+  - 若 $R subset.eq Sigma^*$ 是正则语言，则 $L_1 inter R$ 是上下文无关语言
+- *等价性*：$L$ 是上下文无关语言 $arrow.l.r$ $L$ 可由某个非确定性 PDA 接受
+  - CFG $arrow$ PDA：朴素构造
+  - PDA $arrow$ CFG：规范化后构造；可以读读书上证明
+- 确定性 PDA 与非确定性 PDA 不等价
+  - $L = {w w^R: w in {a, b}^*}$
+  - 需要非确定性地猜测中点
 
 ---
 
@@ -188,8 +251,15 @@
   - $|v y| >= 1$
   - $forall i >= 0$，都有 $u v^i x y^i z in L$
 - 同样用于证明某语言不是上下文无关语言
+- 同样不存在一般方法
+- 几何直观：非终结符成环 $arrow$ 此非终结符左右可任意复制
 
 == 图灵机与递归可数语言
+
+- *停机（Halting）*：程序在给定输入上执行有限步后终止
+- *停机问题*：给定程序 $M$ 及输入 $w$，判断 $M$ 在 $w$ 上是否停机
+
+---
 
 - *确定性图灵机 (DTM)*：五元组 $M = (K,Sigma,delta,s,H)$
   - $Sigma$：符号集，包含特殊符号 $triangle.stroked.r$（纸带左端）和 $bracket.b$
@@ -197,12 +267,6 @@
   - $H$：停机状态集合，$H subset.eq K$
   - *半判定（semidecide）*：对于语言 $L$，存在 DTM $M$，使得对于任意输入 $w$，当且仅当 $w in L$ 时，$M$ 停机并接受 $w$
   - *判定（decide）*：对于语言 $L$，存在 DTM $M$，使得对于任意输入 $w$，$M$ 停机并接受当且仅当 $w in L$，否则停机并拒绝 $w$
-  - 可计算函数 $f$：存在图灵机 $M$，使得对于任意输入 $w$，$M$ 停机并输出 $f(w)$
-
----
-
-- *递归可数（Recursive Enumerable, RE）*：语言 $L$ 被 DTM 半判定
-- *递归（Recursive）*：语言 $L$ 被 DTM 判定
 
 ---
 
@@ -214,6 +278,43 @@
 - 其他图灵机变种：多带图灵机、多头图灵机等
   - 均与标准图灵机等价
 
+---
+
+- *无限制文法（Unrestricted Grammar）*：四元组 $G = (V, Sigma, R, S)$
+  - $V$：有限符号集；$Sigma subset.eq V$：终结符集合；$S in V-Sigma$：开始符号
+  - $R$：有限产生式集合，规则形如 $alpha -> beta$
+    - $alpha in V^*(V-Sigma)V^*$：左部至少包含一个非终结符
+    - $beta in V^*$：右部为任意符号串，可以为空串
+  - 一步推导：若 $(alpha -> beta) in R$，则 $x alpha y =>_G x beta y$
+- *递归可数（Recursively Enumerable, RE）*：语言 $L$ 被 DTM 半判定
+  - 等价：存在无限制文法 $G$，使得 $L = L(G)$
+- *递归（Recursive）*：语言 $L$ 被 DTM 判定
+
+---
+
+- *闭包性质*：设 $L_1, L_2 subset.eq Sigma^*$，补集相对于 $Sigma^*$ 定义
+  - 若 $L_1, L_2$ 均递归，则 $L_1 union L_2$、$L_1 inter L_2$、$overline(L_1)$、$L_1 L_2$、$L_1^*$ 均递归
+  - 若 $L_1, L_2$ 均递归可数，则 $L_1 union L_2$、$L_1 inter L_2$、$L_1 L_2$、$L_1^*$ 均递归可数
+  - $L_1$ 递归可数不保证 $overline(L_1)$ 递归可数
+- $L$ 递归 $arrow.l.r$ $L$ 与 $overline(L)$ 均递归可数
+
+---
+
+- *可计算函数*：将输入和输出编码为自然数，输入 $x in NN^k$，输出 $f(x) in NN$
+  - *全可计算*：存在图灵机 $M$，对每个输入 $x$ 都停机并输出 $f(x)$
+  - *部分可计算*：$f(x)$ 有定义时，$M$ 停机并输出该值；否则不停机
+- *原始递归函数（Primitive Recursive）*
+  - 全可计算函数的组合；允许限定边界的循环
+- *$mu$-递归函数*
+  - 进一步允许无界最小化，相当于引入不限定边界的循环
+  - $mu$ 主要是使得函数有了和图灵机相等的能力；是否可判定需要进一步分析
+
+---
+
+- 递归 $arrow.l.r$ 可判定 $arrow.l.r$ 全可计算
+- 递归可数 $arrow.l.r$ 半可判定 $arrow.l.r$ 部分可计算
+- 原始递归函数更弱
+
 == 判定问题
 
 - *编码*：将图灵机、自动机、若干字符串等对象通过计算表示为字符串
@@ -223,6 +324,15 @@
 - *可判定问题*：将问题实例编码为字符串，构成语言 $L$，存在图灵机判定 $L$
 - *停机问题*：输入图灵机编码 $M$ 和字符串 $w$，判定 $M$ 在输入 $w$ 时是否停机
   - 不可判定
+
+---
+
+- *可判定（Decidable）*：对任何输入停机
+- *可半判定但不可判定*：停机问题。判断程序是否停机
+  - 对属于此语言的输入停机
+- *不可半判定*：判断程序是否永不停机
+  - 对属于此语言的输入也不停机
+- 后两类均为 *不可判定（Undecidable）*
 
 ---
 
