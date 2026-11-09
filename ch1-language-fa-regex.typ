@@ -1,8 +1,24 @@
 #import "template.typ": *
 #show: toc-template.with(
   title: [语言、自动机与正则表达式],
-  date: datetime(year: 2025, month: 11, day: 2),
+  date: datetime(year: 2026, month: 11, day: 7),
 )
+
+/*
+
+# 语言
+
+# FA & regex
+
++ FA 标准写法；DFA 不能省略无效转移边，需要显式画出死状态
+
+# 正则语言判定
+
+# 复杂度
+
+2.6 节的表；正式证明不用管，有点费劲
+
+*/
 
 = 语言
 
@@ -58,6 +74,52 @@
   ),
 )
 
+== 标准表示
+
+#block[
+  接受不含子串 $b b b$ 的字符串的自动机 $M = (K, Sigma, delta, s, F)$
+
+  $K = {q_0, q_1, q_2, q_3}$，$Sigma = {a, b}$，$s = q_0$，$F = {q_0, q_1, q_2}$。
+
+  #grid(
+    columns: (1.5fr, 1fr), column-gutter: 18pt, align: center + horizon,
+    figure-automaton(
+      (
+        q0: (q0: "a", q1: "b"),
+        q1: (q0: "a", q2: "b"),
+        q2: (q0: "a", q3: "b"),
+        q3: (q3: "a,b"),
+      ),
+      initial: "q0", final: ("q0", "q1", "q2"),
+      layout: (q0: (0, 0), q1: (3, 0), q2: (6, 0), q3: (9, 0)),
+      style: (
+        q0-q1: (curve: 0), q1-q2: (curve: 0), q2-q3: (curve: 0),
+        q1-q0: (curve: 1), q2-q0: (curve: 2),
+        q0-q0: (anchor: bottom), q3-q3: (anchor: top),
+      ),
+    ),
+    [
+      #set text(size: 20pt)
+      #table(
+        columns: 3, align: center, inset: (x: 15pt, y: 6pt),
+        stroke: none,
+        table.hline(),
+        table.header([$q$], [$sigma$], [$delta(q, sigma)$]),
+        table.hline(),
+        [$q_0$], [$a$], [$q_0$],
+        [$q_0$], [$b$], [$q_1$],
+        [$q_1$], [$a$], [$q_0$],
+        [$q_1$], [$b$], [$q_2$],
+        [$q_2$], [$a$], [$q_0$],
+        [$q_2$], [$b$], [$q_3$],
+        [$q_3$], [$a$], [$q_3$],
+        [$q_3$], [$b$], [$q_3$],
+        table.hline(),
+      )
+    ],
+  )
+]
+
 == DFA 最小化
 
 - 任意能被 DFA 表示的语言都存在唯一的最小化 DFA
@@ -67,6 +129,50 @@
     - 接受状态与非接受状态不等价
     - 对某一输入符号转移到不同等价类的两个状态不等价
 - 从 ${K-F, F}$ 开始，不断细分每个暂定的等价类直到无法细分
+
+---
+
+#block[
+  *Example 2.5.1*：$Sigma = {a, b}$，$L = (a b union b a)^*$
+
+  $x scripts(approx)_L y arrow.l.r forall z in Sigma^*, (x z in L arrow.l.r y z in L)$
+
+  #grid(
+    columns: (1fr, 1.15fr), column-gutter: 20pt, align: horizon,
+    [
+      - $[epsilon] = L$：已完成配对
+      - $[a] = L a$：等待 $b$ 完成配对
+      - $[b] = L b$：等待 $a$ 完成配对
+      - $[a a] = L(a a union b b)Sigma^*$：出现不合法配对，无法补救
+    ],
+    [
+      #figure-automaton(
+        (
+          q1: (q2: "a", q4: "b"),
+          q2: (q3: "b", q5: "a"),
+          q3: (q2: "a", q6: "b"),
+          q4: (q1: "a", q5: "b"),
+          q5: (q5: "a,b"),
+          q6: (q3: "a", q5: "b"),
+        ),
+        initial: "q1", final: ("q1", "q3"),
+        labels: (q1: $q_1$, q2: $q_2$, q3: $q_3$, q4: $q_4$, q5: $q_5$, q6: $q_6$),
+        layout: (q1: (0, 3), q2: (3, 3), q3: (6, 3), q4: (0, 0), q5: (3, 0), q6: (6, 0)),
+        style: (
+          state: (initial: (anchor: top, label: none)),
+          transition: (label: (angle: 0deg)),
+          q1-q2: (curve: 0), q2-q5: (curve: 0),
+          q4-q5: (curve: 0), q6-q5: (curve: 0),
+          q1-q4: (curve: .65), q4-q1: (curve: .65),
+          q2-q3: (curve: .65), q3-q2: (curve: .65),
+          q3-q6: (curve: .65), q6-q3: (curve: .65),
+          q5-q5: (anchor: bottom),
+        ),
+      )
+      #align(center)[#text(size: 18pt)[Figure 2-20]]
+    ],
+  )
+]
 
 ---
 
@@ -178,7 +284,7 @@
     - 五元组 $M = (K, Sigma, Delta, s, F)$
       - $K$：有限状态集合
       - $Sigma$：输入符号集
-      - $Delta: K times (Sigma union {epsilon})$：状态转移集合
+      - $Delta subset.eq K times (Sigma union {epsilon}) times K$：状态转移集合
       - $s in K$：初始状态
       - $F subset.eq K$：接受状态集合
     - 存在一种转移路线接受字符串 $w$ 即称为 NFA 接受字符串 $w$
@@ -194,6 +300,42 @@
     ),
   ),
 )
+
+== 标准表示
+
+#block[
+  接受含子串 $b b$ 或 $b a b$ 的字符串的自动机 $M = (K, Sigma, Delta, s, F)$
+
+  $K = {q_0, q_1, q_2, q_3, q_4}$，$Sigma = {a, b}$，$s = q_0$，$F = {q_4}$。
+
+  #grid(
+    columns: (1fr, 1.4fr), column-gutter: 18pt, align: center + horizon,
+    figure-automaton(
+      (
+        q0: (q0: "a,b", q1: "b"),
+        q1: (q2: "b", q3: "a"),
+        q2: (q4: "ε"),
+        q3: (q4: "b"),
+        q4: (q4: "a,b"),
+      ),
+      initial: "q0", final: ("q4",),
+      layout: (q0: (0, 3), q1: (3, 3), q2: (6, 3), q3: (3, 0), q4: (6, 0)),
+      style: (
+        q0-q1: (curve: 0), q1-q2: (curve: 0), q1-q3: (curve: 0),
+        q2-q4: (curve: 0), q3-q4: (curve: 0),
+        q0-q0: (anchor: top), q4-q4: (anchor: right),
+      ),
+    ),
+    [
+      #set text(size: 21pt)
+      $ Delta = lr({
+        (q_0, a, q_0), (q_0, b, q_0), (q_0, b, q_1), \
+        (q_1, b, q_2), (q_1, a, q_3), (q_2, epsilon, q_4), \
+        (q_3, b, q_4), (q_4, a, q_4), (q_4, b, q_4)
+      }) $
+    ],
+  )
+]
 
 == NFA 到 DFA 的转换
 
@@ -305,6 +447,37 @@
     - 如果 $q$ 有自环 $(q, a_3, q)$，则添加转移 $(p, (a_1 (a_3)^* a_2), r)$
     - 否则添加转移 $(p, (a_1 a_2), r)$
   - 删除状态 $q$ 及其相关转移
+
+---
+
+// 教材 p. 81，Figure 2-15：状态消除法的初始自动机。
+#figure-automaton(
+  (
+    q1: (q1: "a", q3: "b"),
+    q2: (q2: "a", q1: "b"),
+    q3: (q3: "a", q2: "b"),
+  ),
+  initial: "q1",
+  final: ("q3",),
+  labels: (q1: $q_1$, q2: $q_2$, q3: $q_3$),
+  layout: (q1: (0, 0), q2: (8, 0), q3: (4, 4)),
+  style: (
+    state: (initial: (label: none)),
+    transition: (label: (angle: 0deg)),
+    q1-q3: (curve: 0),
+    q3-q2: (curve: 0),
+    q2-q1: (curve: 0),
+    q1-q1: (anchor: top + left),
+    q2-q2: (anchor: top + right),
+    q3-q3: (anchor: top),
+  ),
+)
+
+#align(center)[#block[
+  #set text(size: 21pt)
+  $ R(i, j, k) = R(i, j, k - 1) union R(i, k, k - 1) R(k, k, k - 1)^* R(k, j, k - 1). $
+]]
+
 
 == 正则语言（Regular Language）
 
