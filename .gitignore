@@ -6,3 +6,5 @@ CLAUDE.md
 .claude
 *.d
 *.7z
+
+build*
