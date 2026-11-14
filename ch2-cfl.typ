@@ -2,8 +2,32 @@
 
 #show: toc-template.with(
   title: [上下文无关语言],
-  date: datetime(year: 2025, month: 11, day: 2),
+  date: datetime(year: 2026, month: 11, day: 14),
 )
+
+/* 
+
+TODOs
+
++ 看看书上的 PDA to CFG 证明
+
++ Parse tree、最左 / 最右推导、Ambiguity √
+
++ PDA 例子 √
+
++ 闭包性质这里举几个例子
+
+---
+
+CFG & CNF
+
+PDA
+
+CFG 2 PDA & PDA 2 CFG
+
+Pumping theorem & 判定
+
+*/
 
 = 上下文无关文法
 
@@ -17,22 +41,82 @@
 - 单步推导 $x A y =>_G x B C y, (A, B C) in R$
 - 多步推导 $x =>_G^* y$，生成字符串 $S =>_G^* w$
 
-== CNF 形式（Chomsky Normal Form）
+#let expression-tree(product-first: true) = diagram(cell-size: (1.7em, 1.5em), spacing: .3em, {
+  if product-first {
+    node((2, 0), name: <root>)[$E$]
+    node((0, 1), name: <left>)[$E$]
+    node((2, 1), name: <op>)[+]
+    node((4, 1), name: <right>)[$E$]
+    node((0, 2), name: <a1>)[$a$]
+    node((3, 2), name: <inner-left>)[$E$]
+    node((4, 2), name: <inner-op>)[∗]
+    node((5, 2), name: <inner-right>)[$E$]
+    node((3, 3), name: <a2>)[$a$]
+    node((5, 3), name: <a3>)[$a$]
+    edge(<left>, <a1>)
+    edge(<right>, <inner-left>)
+    edge(<right>, <inner-op>)
+    edge(<right>, <inner-right>)
+    edge(<inner-left>, <a2>)
+    edge(<inner-right>, <a3>)
+  } else {
+    node((4, 0), name: <root>)[$E$]
+    node((2, 1), name: <left>)[$E$]
+    node((4, 1), name: <op>)[∗]
+    node((6, 1), name: <right>)[$E$]
+    node((1, 2), name: <inner-left>)[$E$]
+    node((2, 2), name: <inner-op>)[+]
+    node((3, 2), name: <inner-right>)[$E$]
+    node((6, 2), name: <a3>)[$a$]
+    node((1, 3), name: <a1>)[$a$]
+    node((3, 3), name: <a2>)[$a$]
+    edge(<left>, <inner-left>)
+    edge(<left>, <inner-op>)
+    edge(<left>, <inner-right>)
+    edge(<inner-left>, <a1>)
+    edge(<inner-right>, <a2>)
+    edge(<right>, <a3>)
+  }
+  edge(<root>, <left>)
+  edge(<root>, <op>)
+  edge(<root>, <right>)
+})
 
-- 所有推导规则都满足以下三种形式之一的 CFG 称为 CNF 形式
-  - $S -> epsilon$
-  - $A -> a, A in V - Sigma, a in Sigma$
-  - $A -> B C, A in V - Sigma, B, C in V - {S} - Sigma$
-- 任何 CNF 形式 CFG 推导出的字符串长度为 $n >= 1$ 的字符串恰好需要 $2n-1$ 步推导
+== 解析树（Parse Tree）
+
+#block[
+  文法 $G = (V, Sigma, R, E)$，其中
+
+  $V = {E, a, +, *}$，$Sigma = {a, +, *}$，\
+  $R = {(E, E + E), (E, E * E), (E, a)}$。
+
+  #grid(columns: (1.4fr, 1fr), column-gutter: 18pt, align: horizon,
+    [
+      - *解析树*：有根有序树
+      - *产出*：最终得到的字符串
+      - *最左/最右推导*
+    ],
+    [
+      #align(center)[#expression-tree()]
+      #align(center)[产出：$a + a * a$]
+    ],
+  )
+]
 
 ---
 
-- 从任意 CFG 构造 CNF 形式 CFG
-  - 引入新起始符号 $S_0$ 和新产生式 $S_0 -> S$
-  - 将所有右侧长度大于 1 的产生式中的终结符替换为新的符号并添加相应产生式
-  - 将所有右侧长度大于 2 的产生式分解为多个二元产生式
-  - 将所有形如 $A -> epsilon$ 的产生式删除，并在其他产生式中进行相应替换
-  - 对所有形如 $A -> B$ 的产生式，将 $B$ 的产生式添加到 $A$ 中
+=== 歧义性（Ambiguity）
+
+#block[
+  - *歧义文法*：存在 $w in L(G)$，具有两棵不同的解析树
+    - 等价地，$w$ 有两个不同的最左推导（或两个不同的最右推导）
+
+  #grid(columns: (1fr, 1fr), column-gutter: 24pt, align: center,
+    [#expression-tree() \ $a + (a * a)$],
+    [#expression-tree(product-first: false) \ $(a + a) * a$],
+  )
+
+]
 
 ---
 
@@ -49,7 +133,59 @@
 - 配置 $C: K times Sigma^* times Gamma^*$，状态、剩余输入、栈内容
 - 推导：$(q, a w', x) tack.r_M (q', w', y), (q, w w', x) tack.r_M^* (q', w', y)$
 - 接受串 $w$：$(s, w, epsilon) tack.r_M^* (q, epsilon, epsilon), q in F$
-- 计算能力强于确定性 PDA
+- 非确定性 PDA 计算能力强于确定性 PDA
+
+---
+
+*Example 3.3.3*
+
+#block[
+  接受语言 $L = {w in {a, b}^*: C_a (w) = C_b (w)}$，其中 $C_a, C_b$ 表示字符个数。
+
+  $M = (K, Sigma, Gamma, Delta, s, F)$，其中
+  $K = {s, q, f}$，$Sigma = {a, b}$，$Gamma = {a, b, c}$，$F = {f}$。$Delta$：
+
+  #table(
+    columns: (auto, 1fr, auto, 1fr),
+    stroke: none, inset: (x: 8pt, y: 5pt),
+    [(1)], [$((s, epsilon, epsilon), (q, c))$],
+    [(5)], [$((q, b, c), (q, b c))$],
+    [(2)], [$((q, a, c), (q, a c))$],
+    [(6)], [$((q, b, b), (q, b b))$],
+    [(3)], [$((q, a, a), (q, a a))$],
+    [(7)], [$((q, b, a), (q, epsilon))$],
+    [(4)], [$((q, a, b), (q, epsilon))$],
+    [(8)], [$((q, epsilon, c), (f, epsilon))$],
+  )
+]
+
+---
+
+*Example 3.3.3*
+
+#block[
+  #set text(size: 18pt)
+  #set par(leading: .45em)
+  #align(center)[
+    #table(
+      columns: (auto, 1fr, auto, auto, 1.5fr),
+      align: (center, center, center, center, left),
+      inset: (x: 12pt, y: 4pt), stroke: 0.5pt + luma(70%),
+      table.header([*状态*], [*未读输入*], [*栈（栈顶在左）*], [*所用转移*], [*说明*]),
+      [$s$], [$a b b b a b a a$], [$epsilon$], [—], [初始配置],
+      [$q$], [$a b b b a b a a$], [$c$], [1], [压入栈底标记],
+      [$q$], [$b b b a b a a$], [$a c$], [2], [压入 $a$],
+      [$q$], [$b b a b a a$], [$c$], [7], [读入 $b$，抵消一个 $a$],
+      [$q$], [$b a b a a$], [$b c$], [5], [压入 $b$],
+      [$q$], [$a b a a$], [$b b c$], [6], [再压入一个 $b$],
+      [$q$], [$b a a$], [$b c$], [4], [读入 $a$，抵消一个 $b$],
+      [$q$], [$a a$], [$b b c$], [6], [压入 $b$],
+      [$q$], [$a$], [$b c$], [4], [抵消一个 $b$],
+      [$q$], [$epsilon$], [$c$], [4], [输入读完，$a$、$b$ 恰好抵消],
+      [$f$], [$epsilon$], [$epsilon$], [8], [弹出 $c$，进入接受状态],
+    )
+  ]
+]
 
 == 从 CFG 构造 PDA
 
@@ -108,6 +244,36 @@
   - 令 $h: Sigma -> Gamma^*$，将其扩展到 $h: Sigma^* -> Gamma^*$，其中 $h(a_1 a_2 ... a_n) = h(a_1) h(a_2) ... h(a_n), h(epsilon) = epsilon$
     - $C_1 = {h(w): w in A}, C_2 = {h^(-1)(w): w in A}$ 是 CFL
 - $L$ 为 CFL，$R$ 为正则语言，则 $L inter R$ 是 CFL
+
+---
+
+*Theorem 3.5.4*
+
+#block[
+
+  - $ L_1 = {a^n b^n c^m: m, n >= 0}, quad L_2 = {a^m b^n c^n: m, n >= 0}. $
+
+  $ L_1 inter L_2 = {a^n b^n c^n: n >= 0} in.not "CFL". $
+]
+
+---
+
+// 根据教材 Theorem 3.5.4 与习题 3.5.14(b) 构造具体反例。
+*Problem 3.5.14*
+
+#block[
+    $L = {a^n b^n c^n: n >= 0} in.not "CFL".$
+
+    $overline(L) in "CFL".$
+
+  - $A = {a^i b^j c^k: i, j, k >= 0, i != j "or" j != k}$
+
+    - $A = {a^i b^j: i != j} c^* union a^* {b^j c^k: j != k}$
+
+  - $overline(L) = (Sigma^* - a^* b^* c^*) union A$
+
+  - 若 CFL 对补封闭，则由德摩根律也会对交封闭，与例 2 矛盾
+]
 
 == CFL 的 Pumping Theorem
 
@@ -262,7 +428,7 @@ $forall p >= 1$，取 $w = a^p b^p c^p d^p$，则 $|w| = 4p >= p$
 
 任意划分 $w = u v x y z, |v x y| <= p, |v y| >= 1$，则 $v x y$ 最多包含两种字符
 
-取 $i = 0$，$u v^0 x y^0 z = u x z in.not L'$
+取 $k = 0$，$u v^k x y^k z = u x z in.not L'$
 
 ---
 
